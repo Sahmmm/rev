@@ -16,5 +16,19 @@ learning.
 - `docs/content-format.md` : format des contenus structures pour alimenter
   les flashcards, questions ecrites et challenges.
 
-Pour l'instant, aucune implementation n'est ajoutee. La prochaine etape peut
-definir la vision produit, les modules fonctionnels et les parcours utilisateur.
+## Lancement local
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+La premiere implementation charge les contenus JSON de `../resources/processed/`
+et propose une interface claire avec tableau de bord, flashcards, questions
+ecrites, challenge, ressources et progression locale.
