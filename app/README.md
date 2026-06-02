@@ -30,5 +30,9 @@ npm run build
 ```
 
 La premiere implementation charge les contenus JSON de `../resources/processed/`
-et propose une interface claire avec tableau de bord, flashcards, questions
-ecrites, challenge, ressources et progression locale.
+et propose une interface claire avec page d'accueil, tableau de bord,
+flashcards, questions ecrites, challenge, ressources et progression locale.
+
+L'experience de revision inclut une navigation fluide carte par carte et
+question par question, avec barres de progression, controles precedent/suivant
+et auto-evaluation locale.

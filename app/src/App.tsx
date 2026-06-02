@@ -12,9 +12,10 @@ import {
 } from "./data";
 import type { Challenge, Flashcard, ProgressEntry, ReviewRating, SessionEntry, WrittenQuestion } from "./types";
 
-type Tab = "dashboard" | "flashcards" | "written" | "challenge" | "resources" | "progress";
+type Tab = "home" | "dashboard" | "flashcards" | "written" | "challenge" | "resources" | "progress";
 
 const tabs: Array<{ id: Tab; label: string }> = [
+  { id: "home", label: "Accueil" },
   { id: "dashboard", label: "Tableau de bord" },
   { id: "flashcards", label: "Flashcards" },
   { id: "written", label: "Questions ecrites" },
@@ -93,7 +94,7 @@ function selectChallengeCards(challenge: Challenge, progress: Record<string, Pro
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState<Tab>("dashboard");
+  const [activeTab, setActiveTab] = useState<Tab>("home");
   const [progress, setProgress] = useLocalState<Record<string, ProgressEntry>>("dl-revision-progress", {});
   const [sessions, setSessions] = useLocalState<SessionEntry[]>("dl-revision-sessions", []);
 
@@ -193,6 +194,14 @@ function App() {
       </nav>
 
       <main>
+        {activeTab === "home" && (
+          <HomePage
+            dueCount={dueCount}
+            masteryRate={masteryRate}
+            reviewedCount={reviewedCount}
+            onNavigate={setActiveTab}
+          />
+        )}
         {activeTab === "dashboard" && (
           <Dashboard
             dueCount={dueCount}
@@ -213,6 +222,80 @@ function App() {
         )}
       </main>
     </div>
+  );
+}
+
+function HomePage({
+  dueCount,
+  masteryRate,
+  reviewedCount,
+  onNavigate
+}: {
+  dueCount: number;
+  masteryRate: number;
+  reviewedCount: number;
+  onNavigate: (tab: Tab) => void;
+}) {
+  const totalItems = flashcards.length + writtenQuestions.length;
+
+  return (
+    <section className="home-layout">
+      <div className="home-card home-intro">
+        <span className="section-kicker">Bienvenue</span>
+        <h2>Ton espace de revision Deep Learning</h2>
+        <p>
+          Commence par une session courte, travaille une question ecrite, puis
+          mesure ta maitrise avec un challenge. L'interface garde une trace de
+          tes auto-evaluations pour guider les prochaines revisions.
+        </p>
+        <div className="home-actions">
+          <button className="primary-button" onClick={() => onNavigate("flashcards")} type="button">
+            Commencer par les flashcards
+          </button>
+          <button className="ghost-button" onClick={() => onNavigate("written")} type="button">
+            Rediger une reponse
+          </button>
+        </div>
+      </div>
+
+      <div className="home-card home-focus">
+        <span className="section-kicker">Session conseillee</span>
+        <h2>20 minutes efficaces</h2>
+        <ol className="study-steps">
+          <li><strong>5 min</strong><span>Rappel rapide avec quelques cartes dues.</span></li>
+          <li><strong>10 min</strong><span>Question ecrite pour structurer le raisonnement.</span></li>
+          <li><strong>5 min</strong><span>Bilan : OK, A revoir ou Difficile.</span></li>
+        </ol>
+        <button className="primary-button full-width" onClick={() => onNavigate("challenge")} type="button">
+          Lancer un sprint
+        </button>
+      </div>
+
+      <div className="home-metrics">
+        <StatCard label="Items disponibles" value={totalItems} tone="lavender" />
+        <StatCard label="Items deja vus" value={reviewedCount} tone="mint" />
+        <StatCard label="Items dus" value={dueCount} tone="peach" />
+        <StatCard label="Maitrise OK" value={`${masteryRate}%`} tone="sky-tone" />
+      </div>
+
+      <div className="home-card wide">
+        <span className="section-kicker">Parcours rapide</span>
+        <div className="quick-paths">
+          <button onClick={() => onNavigate("flashcards")} type="button">
+            <strong>Flashcards</strong>
+            <span>Revoir les notions, afficher la reponse, s'auto-evaluer.</span>
+          </button>
+          <button onClick={() => onNavigate("written")} type="button">
+            <strong>Questions ecrites</strong>
+            <span>S'entrainer a formuler une correction de niveau examen.</span>
+          </button>
+          <button onClick={() => onNavigate("dashboard")} type="button">
+            <strong>Tableau de bord</strong>
+            <span>Voir les priorites, l'historique et les points faibles.</span>
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -311,6 +394,17 @@ function FlashcardsPanel({
   }, [selectedTopic, selectedDifficulty]);
 
   const card = filteredCards[cardIndex];
+  const progressPercent = filteredCards.length === 0 ? 0 : ((cardIndex + 1) / filteredCards.length) * 100;
+
+  const goToCard = (nextIndex: number) => {
+    if (filteredCards.length === 0) {
+      return;
+    }
+
+    const boundedIndex = (nextIndex + filteredCards.length) % filteredCards.length;
+    setCardIndex(boundedIndex);
+    setRevealed(false);
+  };
 
   if (!card) {
     return (
@@ -322,7 +416,7 @@ function FlashcardsPanel({
   }
 
   return (
-    <section className="panel">
+    <section className="panel study-panel">
       <PanelHeader
         kicker="Rappel actif"
         title="Flashcards"
@@ -336,7 +430,19 @@ function FlashcardsPanel({
         onDifficultyChange={setSelectedDifficulty}
       />
 
-      <article className="study-card">
+      <div className="study-navigation" aria-label="Navigation des flashcards">
+        <button className="ghost-button" onClick={() => goToCard(cardIndex - 1)} type="button">
+          ← Carte precedente
+        </button>
+        <div className="progress-strip" aria-label={`Carte ${cardIndex + 1} sur ${filteredCards.length}`}>
+          <span style={{ width: `${progressPercent}%` }} />
+        </div>
+        <button className="ghost-button" onClick={() => goToCard(cardIndex + 1)} type="button">
+          Carte suivante →
+        </button>
+      </div>
+
+      <article className="study-card focus-card">
         <div className="card-meta">
           <Badge>{difficultyLabel(card.difficulty)}</Badge>
           <Badge>{statusLabel(card.status)}</Badge>
@@ -354,51 +460,42 @@ function FlashcardsPanel({
           </div>
         )}
 
-        {revealed ? (
-          <div className="answer-box">
-            <strong>Reponse detaillee</strong>
-            <p>{card.answer}</p>
-            {card.commonMistakes.length > 0 && (
-              <p className="mistake">
-                Piege frequent : {card.commonMistakes[0]}
-              </p>
-            )}
-          </div>
-        ) : (
-          <button className="primary-button" onClick={() => setRevealed(true)} type="button">
-            Afficher la reponse
-          </button>
-        )}
+        <div className={revealed ? "answer-box revealed" : "answer-placeholder"}>
+          {revealed ? (
+            <>
+              <strong>Reponse detaillee</strong>
+              <p>{card.answer}</p>
+              {card.commonMistakes.length > 0 && (
+                <p className="mistake">
+                  Piege frequent : {card.commonMistakes[0]}
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              <strong>Reponse masquee</strong>
+              <p>Respire, formule ta reponse mentalement, puis revele la correction.</p>
+              <button className="primary-button" onClick={() => setRevealed(true)} type="button">
+                Afficher la reponse
+              </button>
+            </>
+          )}
+        </div>
 
         <RatingButtons
           disabled={!revealed}
           onRate={(rating) => {
             onRate(card.id, rating, card.question, "flashcards");
-            setRevealed(false);
-            setCardIndex((current) => (current + 1) % filteredCards.length);
+            goToCard(cardIndex + 1);
           }}
         />
 
-        <div className="card-footer">
-          <button
-            className="ghost-button"
-            onClick={() => {
-              setRevealed(false);
-              setCardIndex((current) => (current === 0 ? filteredCards.length - 1 : current - 1));
-            }}
-            type="button"
-          >
-            Precedente
+        <div className="card-footer smooth-footer">
+          <button className="ghost-button" onClick={() => goToCard(0)} type="button">
+            Revenir au debut
           </button>
-          <button
-            className="ghost-button"
-            onClick={() => {
-              setRevealed(false);
-              setCardIndex((current) => (current + 1) % filteredCards.length);
-            }}
-            type="button"
-          >
-            Suivante
+          <button className="ghost-button" onClick={() => setRevealed((current) => !current)} type="button">
+            {revealed ? "Masquer la reponse" : "Reveler"}
           </button>
         </div>
         {progress[card.id] && (
@@ -419,11 +516,23 @@ function WrittenQuestionsPanel({
   progress: Record<string, ProgressEntry>;
   onRate: (itemId: string, rating: ReviewRating, title: string, type: SessionEntry["type"]) => void;
 }) {
-  const [selectedId, setSelectedId] = useState(writtenQuestions[0]?.id ?? "");
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState("");
   const [showCorrection, setShowCorrection] = useState(false);
 
-  const question = writtenQuestions.find((item) => item.id === selectedId) ?? writtenQuestions[0];
+  const question = writtenQuestions[questionIndex];
+  const progressPercent = writtenQuestions.length === 0 ? 0 : ((questionIndex + 1) / writtenQuestions.length) * 100;
+
+  const goToQuestion = (nextIndex: number) => {
+    if (writtenQuestions.length === 0) {
+      return;
+    }
+
+    const boundedIndex = (nextIndex + writtenQuestions.length) % writtenQuestions.length;
+    setQuestionIndex(boundedIndex);
+    setAnswer("");
+    setShowCorrection(false);
+  };
 
   if (!question) {
     return (
@@ -434,34 +543,51 @@ function WrittenQuestionsPanel({
   }
 
   return (
-    <section className="grid two-columns">
-      <div className="panel">
+    <section className="grid written-layout">
+      <div className="panel question-rail">
+        <span className="section-kicker">File de questions</span>
+        <h2>Choisis ton exercice</h2>
+        <div className="question-list" role="list">
+          {writtenQuestions.map((item, index) => (
+            <button
+              className={index === questionIndex ? "question-chip active" : "question-chip"}
+              key={item.id}
+              onClick={() => goToQuestion(index)}
+              type="button"
+            >
+              <span>Question {index + 1}</span>
+              <strong>{difficultyLabel(item.difficulty)}</strong>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="panel written-main">
         <PanelHeader
           kicker="Production ecrite"
           title="Questions a reponse redigee"
           description="Redige d'abord ta reponse, puis compare avec la correction officielle."
         />
-        <label className="field-label" htmlFor="question-select">
-          Choisir une question
-        </label>
-        <select
-          id="question-select"
-          value={selectedId}
-          onChange={(event) => {
-            setSelectedId(event.target.value);
-            setAnswer("");
-            setShowCorrection(false);
-          }}
-        >
-          {writtenQuestions.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.prompt}
-            </option>
-          ))}
-        </select>
 
-        <article className="written-prompt">
-          <Badge>{difficultyLabel(question.difficulty)}</Badge>
+        <div className="study-navigation" aria-label="Navigation des questions ecrites">
+          <button className="ghost-button" onClick={() => goToQuestion(questionIndex - 1)} type="button">
+            ← Question precedente
+          </button>
+          <div className="progress-strip" aria-label={`Question ${questionIndex + 1} sur ${writtenQuestions.length}`}>
+            <span style={{ width: `${progressPercent}%` }} />
+          </div>
+          <button className="ghost-button" onClick={() => goToQuestion(questionIndex + 1)} type="button">
+            Question suivante →
+          </button>
+        </div>
+
+        <article className="written-prompt focus-card">
+          <div className="card-meta">
+            <Badge>{difficultyLabel(question.difficulty)}</Badge>
+            <span>
+              Question {questionIndex + 1} / {writtenQuestions.length}
+            </span>
+          </div>
           <h3>{question.prompt}</h3>
           <p className="muted">{getItemTopics(question)}</p>
         </article>
@@ -476,17 +602,20 @@ function WrittenQuestionsPanel({
           placeholder="Ecris une reponse structuree avant d'afficher la correction..."
         />
 
-        <div className="actions-row">
+        <div className="actions-row sticky-actions">
           <button className="primary-button" onClick={() => setShowCorrection(true)} type="button">
             Afficher la correction
           </button>
           <button className="ghost-button" onClick={() => setAnswer("")} type="button">
             Effacer
           </button>
+          <button className="ghost-button" onClick={() => goToQuestion(questionIndex + 1)} type="button">
+            Passer
+          </button>
         </div>
       </div>
 
-      <div className="panel pastel-panel">
+      <div className="panel pastel-panel correction-panel">
         <span className="section-kicker">Correction</span>
         {showCorrection ? (
           <>
@@ -499,6 +628,7 @@ function WrittenQuestionsPanel({
             <RatingButtons
               onRate={(rating) => {
                 onRate(question.id, rating, question.prompt, "written-question");
+                goToQuestion(questionIndex + 1);
               }}
             />
             {progress[question.id] && (
@@ -508,10 +638,13 @@ function WrittenQuestionsPanel({
             )}
           </>
         ) : (
-          <p className="muted">
-            La correction reste masquee pour proteger le rappel actif. Affiche-la
-            apres avoir formule une vraie tentative.
-          </p>
+          <div className="correction-placeholder">
+            <h2>Correction masquee</h2>
+            <p className="muted">
+              Elle apparaitra ici apres ta tentative. Essaie d'abord de structurer
+              ta reponse avec definitions, intuition, limites et exemples.
+            </p>
+          </div>
         )}
       </div>
     </section>
