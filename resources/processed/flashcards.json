@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "schema": "schemas/flashcard.schema.json",
+  "flashcards": [
+    {
+      "id": "fc-neural-network-forward-pass",
+      "type": "flashcard",
+      "question": "Que represente la propagation avant dans un reseau de neurones profond ?",
+      "answer": "La propagation avant calcule successivement les activations de chaque couche a partir de l'entree jusqu'a la prediction finale. Chaque couche applique typiquement une transformation affine suivie d'une non-linearite. Elle definit donc la fonction parametree par le reseau. C'est aussi le graphe de calcul sur lequel la perte sera evaluee avant de lancer la backpropagation.",
+      "difficulty": "easy",
+      "topicIds": ["neural-networks"],
+      "tags": ["forward-pass", "activations", "model-function"],
+      "source": {
+        "resourceId": "course-presentation-reseaux-neurones",
+        "resourceType": "course",
+        "file": "resources/courses/Presentation_reseaux_de_neurones.pdf",
+        "locator": null
+      },
+      "hints": ["Penser a la composition couche par couche."],
+      "commonMistakes": ["Confondre propagation avant et mise a jour des poids."],
+      "status": "draft"
+    },
+    {
+      "id": "fc-backpropagation-purpose",
+      "type": "flashcard",
+      "question": "Quel est le role de la backpropagation dans l'entrainement d'un reseau profond ?",
+      "answer": "La backpropagation calcule efficacement les gradients de la fonction de perte par rapport aux parametres du reseau en appliquant la regle de derivation en chaine du dernier niveau vers les premieres couches. Elle ne choisit pas directement les nouveaux poids : elle fournit les gradients utilises ensuite par un optimiseur comme SGD, Adam ou une autre variante.",
+      "difficulty": "medium",
+      "topicIds": ["backpropagation", "optimization"],
+      "tags": ["gradient", "chain-rule", "training"],
+      "source": {
+        "resourceId": "course-presentation-reseaux-neurones",
+        "resourceType": "course",
+        "file": "resources/courses/Presentation_reseaux_de_neurones.pdf",
+        "locator": null
+      },
+      "hints": ["Distinguer calcul du gradient et choix du pas d'optimisation."],
+      "commonMistakes": ["Dire que la backpropagation est elle-meme l'algorithme d'optimisation complet."],
+      "status": "draft"
+    },
+    {
+      "id": "fc-sgd-mini-batch",
+      "type": "flashcard",
+      "question": "Pourquoi utilise-t-on souvent le mini-batch SGD plutot que la descente de gradient complete ?",
+      "answer": "Le mini-batch SGD estime le gradient sur un sous-ensemble d'exemples. Il reduit le cout memoire et calcul par mise a jour, permet des mises a jour plus frequentes et profite mieux du calcul vectorise. Le gradient est plus bruite que le gradient complet, mais ce bruit peut aider l'exploration de l'espace des parametres. Le compromis principal concerne variance du gradient, vitesse de calcul et stabilite de convergence.",
+      "difficulty": "medium",
+      "topicIds": ["sgd", "optimization"],
+      "tags": ["mini-batch", "gradient-variance", "convergence"],
+      "source": {
+        "resourceId": "course-cm-01-sgd",
+        "resourceType": "course",
+        "file": "resources/courses/CM_01_SGD.pdf",
+        "locator": null
+      },
+      "hints": ["Comparer cout, bruit et frequence des mises a jour."],
+      "commonMistakes": ["Presenter le mini-batch uniquement comme une approximation moins chere sans parler du bruit du gradient."],
+      "status": "draft"
+    },
+    {
+      "id": "fc-learning-rate-risk",
+      "type": "flashcard",
+      "question": "Quels sont les risques d'un taux d'apprentissage trop grand ou trop petit ?",
+      "answer": "Un taux trop grand peut provoquer des oscillations, une divergence ou le depassement repete de regions de faible perte. Un taux trop petit rend l'entrainement tres lent et peut donner l'impression d'un plateau. Le bon choix depend de l'echelle des gradients, de la normalisation, de l'optimiseur et parfois d'un scheduler qui adapte le pas pendant l'entrainement.",
+      "difficulty": "easy",
+      "topicIds": ["optimization", "sgd"],
+      "tags": ["learning-rate", "training-stability", "scheduler"],
+      "source": {
+        "resourceId": "course-cm-01-sgd",
+        "resourceType": "course",
+        "file": "resources/courses/CM_01_SGD.pdf",
+        "locator": null
+      },
+      "hints": ["Relier le pas a la stabilite de la descente."],
+      "commonMistakes": ["Dire seulement que le modele apprend moins bien, sans distinguer divergence et lenteur."],
+      "status": "draft"
+    },
+    {
+      "id": "fc-cnn-inductive-bias",
+      "type": "flashcard",
+      "question": "Quel biais inductif principal est introduit par une couche convolutionnelle pour les images ?",
+      "answer": "Une couche convolutionnelle encode l'hypothese que les motifs locaux sont importants et que le meme detecteur de motif peut etre utile a plusieurs positions de l'image. Cela se traduit par des champs recepteurs locaux et un partage de poids. Ce biais reduit le nombre de parametres et favorise une certaine equivariance aux translations, ce qui est adapte aux donnees spatiales.",
+      "difficulty": "medium",
+      "topicIds": ["cnn"],
+      "tags": ["convolution", "inductive-bias", "weight-sharing", "translation"],
+      "source": {
+        "resourceId": "course-cours-cnn",
+        "resourceType": "course",
+        "file": "resources/courses/cours_cnn.pdf",
+        "locator": null
+      },
+      "hints": ["Penser localite et partage de poids."],
+      "commonMistakes": ["Dire qu'un CNN est automatiquement invariant a toute translation ; la convolution donne plutot une equivariance locale, souvent combinee a pooling ou augmentation."],
+      "status": "draft"
+    },
+    {
+      "id": "fc-cnn-parameters",
+      "type": "flashcard",
+      "question": "Comment calculer le nombre de parametres d'une couche de convolution 2D standard ?",
+      "answer": "Pour une convolution 2D avec K filtres de taille h x w, C canaux d'entree et un biais par filtre, le nombre de parametres est K x h x w x C + K. Ce nombre ne depend pas directement de la hauteur ou largeur de l'image d'entree, contrairement a une couche dense appliquee sur les pixels aplatis.",
+      "difficulty": "medium",
+      "topicIds": ["cnn"],
+      "tags": ["parameters", "filters", "channels"],
+      "source": {
+        "resourceId": "course-01-presentation-cnn",
+        "resourceType": "course",
+        "file": "resources/courses/01_Presentation_CNN.pdf",
+        "locator": null
+      },
+      "hints": ["Compter les poids de tous les filtres et les biais."],
+      "commonMistakes": ["Multiplier par la taille spatiale de la sortie, alors que les poids sont partages."],
+      "status": "draft"
+    },
+    {
+      "id": "fc-overfitting-generalization",
+      "type": "flashcard",
+      "question": "Comment distinguer sur-apprentissage et mauvaise optimisation pendant l'entrainement ?",
+      "answer": "Le sur-apprentissage apparait typiquement lorsque la perte d'entrainement continue de diminuer alors que la performance de validation se degrade ou stagne. Une mauvaise optimisation se manifeste plutot par une perte d'entrainement elevee ou instable. Les diagnostics doivent donc comparer entrainement et validation, pas seulement regarder le score final.",
+      "difficulty": "medium",
+      "topicIds": ["regularization", "optimization"],
+      "tags": ["overfitting", "validation", "diagnostic"],
+      "source": {
+        "resourceId": "course-cm1",
+        "resourceType": "course",
+        "file": "resources/courses/CM1.pdf",
+        "locator": null
+      },
+      "hints": ["Comparer courbes train et validation."],
+      "commonMistakes": ["Attribuer tout mauvais score de validation au sur-apprentissage sans verifier la perte d'entrainement."],
+      "status": "draft"
+    },
+    {
+      "id": "fc-data-centric-ai",
+      "type": "flashcard",
+      "question": "Que signifie une approche centree donnees en deep learning ?",
+      "answer": "Une approche centree donnees cherche a ameliorer la performance en travaillant prioritairement sur la qualite, la couverture, l'annotation, l'equilibre et la representativite des donnees, plutot qu'en modifiant uniquement l'architecture du modele. Elle inclut par exemple l'analyse d'erreurs, le nettoyage d'etiquettes, l'augmentation ciblee et la detection de sous-populations mal couvertes.",
+      "difficulty": "medium",
+      "topicIds": ["data-centric-ai", "regularization"],
+      "tags": ["data-quality", "error-analysis", "dataset"],
+      "source": {
+        "resourceId": "course-presentation-approches-centrees-donnees",
+        "resourceType": "course",
+        "file": "resources/courses/Presentation_approches_centrees_donnees.pdf",
+        "locator": null
+      },
+      "hints": ["Le levier principal est le dataset, pas seulement le modele."],
+      "commonMistakes": ["Reduire l'approche centree donnees a une simple augmentation de donnees aleatoire."],
+      "status": "draft"
+    },
+    {
+      "id": "fc-activation-nonlinearity",
+      "type": "flashcard",
+      "question": "Pourquoi les fonctions d'activation non lineaires sont-elles essentielles dans un reseau profond ?",
+      "answer": "Sans non-linearites, la composition de plusieurs couches affines reste equivalente a une seule transformation affine. Les fonctions d'activation permettent au reseau de representer des relations non lineaires complexes. Leur choix influence aussi la propagation des gradients, la stabilite de l'entrainement et le comportement des activations.",
+      "difficulty": "easy",
+      "topicIds": ["neural-networks", "backpropagation"],
+      "tags": ["activation", "nonlinearity", "expressivity"],
+      "source": {
+        "resourceId": "course-presentation-reseaux-neurones",
+        "resourceType": "course",
+        "file": "resources/courses/Presentation_reseaux_de_neurones.pdf",
+        "locator": null
+      },
+      "hints": ["Composer plusieurs fonctions lineaires ne suffit pas."],
+      "commonMistakes": ["Dire seulement que les activations accelerent l'entrainement ; leur role premier est l'expressivite non lineaire."],
+      "status": "draft"
+    },
+    {
+      "id": "fc-regularization-purpose",
+      "type": "flashcard",
+      "question": "Quel est l'objectif de la regularisation dans un modele de deep learning ?",
+      "answer": "La regularisation vise a ameliorer la generalisation en limitant la capacite effective du modele, en reduisant sa sensibilite a des details non robustes du jeu d'entrainement ou en injectant des contraintes utiles. Elle peut prendre la forme de penalisation des poids, dropout, augmentation de donnees, early stopping ou normalisation selon le contexte.",
+      "difficulty": "medium",
+      "topicIds": ["regularization"],
+      "tags": ["generalization", "dropout", "early-stopping", "weight-decay"],
+      "source": {
+        "resourceId": "course-cm2",
+        "resourceType": "course",
+        "file": "resources/courses/CM2.pdf",
+        "locator": null
+      },
+      "hints": ["Relier regularisation et ecart train-validation."],
+      "commonMistakes": ["Presenter la regularisation comme une garantie de meilleure performance sur tous les jeux de donnees."],
+      "status": "draft"
+    }
+  ]
+}
