@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/rev/written-question.schema.json",
+  "title": "WrittenQuestion",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "prompt",
+    "officialAnswer",
+    "expectedStructure",
+    "gradingCriteria",
+    "difficulty",
+    "topicIds",
+    "tags",
+    "source",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^wq-[a-z0-9-]+$"
+    },
+    "type": {
+      "const": "written-question"
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "officialAnswer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expectedStructure": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "gradingCriteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"]
+    },
+    "topicIds": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "reviewed", "active", "archived"]
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "required": ["resourceId", "resourceType", "file"],
+      "additionalProperties": false,
+      "properties": {
+        "resourceId": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "resourceType": {
+          "type": "string",
+          "enum": ["course", "exam", "tp", "personal-note"]
+        },
+        "file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locator": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}

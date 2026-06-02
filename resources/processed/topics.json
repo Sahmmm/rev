@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "schema": "schemas/topic.schema.json",
+  "topics": [
+    {
+      "id": "deep-learning",
+      "name": "Deep Learning",
+      "description": "Cadre general des modeles neuronaux profonds, de leur entrainement et de leur evaluation.",
+      "parentTopicId": null,
+      "level": "foundation",
+      "prerequisites": []
+    },
+    {
+      "id": "neural-networks",
+      "name": "Reseaux de neurones",
+      "description": "Perceptrons multicouches, fonctions d'activation, propagation avant et representation apprise.",
+      "parentTopicId": "deep-learning",
+      "level": "foundation",
+      "prerequisites": []
+    },
+    {
+      "id": "backpropagation",
+      "name": "Backpropagation",
+      "description": "Calcul efficace des gradients par composition de derivees dans un reseau de neurones.",
+      "parentTopicId": "neural-networks",
+      "level": "intermediate",
+      "prerequisites": ["neural-networks"]
+    },
+    {
+      "id": "optimization",
+      "name": "Optimisation",
+      "description": "Methodes d'optimisation des parametres, notamment descente de gradient et variantes stochastiques.",
+      "parentTopicId": "deep-learning",
+      "level": "foundation",
+      "prerequisites": []
+    },
+    {
+      "id": "sgd",
+      "name": "Descente de gradient stochastique",
+      "description": "Optimisation par estimation bruitee du gradient sur exemples ou mini-batchs.",
+      "parentTopicId": "optimization",
+      "level": "intermediate",
+      "prerequisites": ["optimization"]
+    },
+    {
+      "id": "cnn",
+      "name": "Reseaux convolutionnels",
+      "description": "Architectures exploitant convolution, partage de poids et structure spatiale des donnees.",
+      "parentTopicId": "deep-learning",
+      "level": "intermediate",
+      "prerequisites": ["neural-networks", "backpropagation"]
+    },
+    {
+      "id": "regularization",
+      "name": "Regularisation et generalisation",
+      "description": "Techniques et raisonnements permettant de limiter le sur-apprentissage et d'ameliorer la generalisation.",
+      "parentTopicId": "deep-learning",
+      "level": "intermediate",
+      "prerequisites": ["neural-networks", "optimization"]
+    },
+    {
+      "id": "data-centric-ai",
+      "name": "Approches centrees donnees",
+      "description": "Amelioration des performances par qualite, couverture, annotation et diagnostic des donnees.",
+      "parentTopicId": "deep-learning",
+      "level": "advanced",
+      "prerequisites": ["neural-networks", "regularization"]
+    }
+  ]
+}

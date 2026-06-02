@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "schema": "schemas/challenge.schema.json",
+  "challenges": [
+    {
+      "id": "challenge-sprint-20-master-dl",
+      "name": "Sprint 20 minutes - Deep Learning Master",
+      "description": "Session courte pour verifier la disponibilite des notions essentielles sous contrainte de temps.",
+      "durationMinutes": 20,
+      "selection": {
+        "flashcardCount": 10,
+        "writtenQuestionCount": 1,
+        "topicStrategy": "Prioriser les items dus en repetition espacee, puis completer avec les themes les plus faibles. Garantir au moins deux themes differents si le stock d'items le permet.",
+        "difficultyMix": {
+          "easy": 0.2,
+          "medium": 0.6,
+          "hard": 0.2
+        }
+      },
+      "successCriteria": [
+        "Au moins 70% des flashcards marquees OK.",
+        "Question ecrite auto-evaluee OK ou A revoir, mais pas Difficile.",
+        "Identification d'au moins un theme prioritaire a retravailler apres le bilan."
+      ],
+      "pedagogicalGoal": "Tester rapidement le rappel actif, la precision conceptuelle et la capacite a formuler une reponse d'examen.",
+      "status": "active"
+    },
+    {
+      "id": "challenge-cnn-diagnostic",
+      "name": "Diagnostic CNN",
+      "description": "Mini-challenge cible sur convolution, partage de poids, calcul de parametres et biais inductifs.",
+      "durationMinutes": 15,
+      "selection": {
+        "flashcardCount": 6,
+        "writtenQuestionCount": 1,
+        "topicStrategy": "Selectionner uniquement des items du theme cnn, avec priorite aux cartes marquees A revoir ou Difficile.",
+        "difficultyMix": {
+          "easy": 0.15,
+          "medium": 0.7,
+          "hard": 0.15
+        }
+      },
+      "successCriteria": [
+        "Savoir expliquer localite et partage de poids.",
+        "Reussir au moins un calcul de nombre de parametres.",
+        "Ne pas confondre equivariance et invariance."
+      ],
+      "pedagogicalGoal": "Isoler les difficultes frequentes sur les CNN avant de passer a un mode examen plus large.",
+      "status": "draft"
+    }
+  ]
+}

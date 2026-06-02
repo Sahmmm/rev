@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "schema": "schemas/resource.schema.json",
+  "resources": [
+    {
+      "id": "course-cm1",
+      "title": "CM1",
+      "type": "course",
+      "path": "resources/courses/CM1.pdf",
+      "topics": ["deep-learning", "neural-networks", "regularization"],
+      "status": "raw",
+      "notes": "Support importe depuis main. Themes precis a confirmer apres lecture detaillee."
+    },
+    {
+      "id": "course-cm2",
+      "title": "CM2",
+      "type": "course",
+      "path": "resources/courses/CM2.pdf",
+      "topics": ["deep-learning", "regularization", "optimization"],
+      "status": "raw",
+      "notes": "Support importe depuis main. Themes precis a confirmer apres lecture detaillee."
+    },
+    {
+      "id": "course-cm-01-sgd",
+      "title": "CM 01 SGD",
+      "type": "course",
+      "path": "resources/courses/CM_01_SGD.pdf",
+      "topics": ["optimization", "sgd"],
+      "status": "raw",
+      "notes": "Support dedie a la descente de gradient stochastique."
+    },
+    {
+      "id": "course-presentation-reseaux-neurones",
+      "title": "Presentation reseaux de neurones",
+      "type": "course",
+      "path": "resources/courses/Presentation_reseaux_de_neurones.pdf",
+      "topics": ["neural-networks", "backpropagation"],
+      "status": "raw",
+      "notes": "Support utilise pour les notions de base des reseaux de neurones."
+    },
+    {
+      "id": "course-presentation-approches-centrees-donnees",
+      "title": "Presentation approches centrees donnees",
+      "type": "course",
+      "path": "resources/courses/Presentation_approches_centrees_donnees.pdf",
+      "topics": ["data-centric-ai", "regularization"],
+      "status": "raw",
+      "notes": "Support dedie aux approches centrees donnees."
+    },
+    {
+      "id": "course-01-presentation-cnn",
+      "title": "01 Presentation CNN",
+      "type": "course",
+      "path": "resources/courses/01_Presentation_CNN.pdf",
+      "topics": ["cnn"],
+      "status": "raw",
+      "notes": "Support dedie aux reseaux convolutionnels."
+    },
+    {
+      "id": "course-cours-cnn",
+      "title": "Cours CNN",
+      "type": "course",
+      "path": "resources/courses/cours_cnn.pdf",
+      "topics": ["cnn"],
+      "status": "raw",
+      "notes": "Support complementaire sur les CNN."
+    }
+  ]
+}

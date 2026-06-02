@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/rev/challenge.schema.json",
+  "title": "Challenge",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "description",
+    "durationMinutes",
+    "selection",
+    "successCriteria",
+    "pedagogicalGoal",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^challenge-[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "durationMinutes": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "selection": {
+      "type": "object",
+      "required": ["flashcardCount", "writtenQuestionCount", "topicStrategy", "difficultyMix"],
+      "additionalProperties": false,
+      "properties": {
+        "flashcardCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "writtenQuestionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "topicStrategy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "difficultyMix": {
+          "type": "object",
+          "required": ["easy", "medium", "hard"],
+          "additionalProperties": false,
+          "properties": {
+            "easy": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "medium": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "hard": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      }
+    },
+    "successCriteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "pedagogicalGoal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "active", "archived"]
+    }
+  }
+}

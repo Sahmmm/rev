@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/rev/topic.schema.json",
+  "title": "Topic",
+  "type": "object",
+  "required": ["id", "name", "description", "level", "prerequisites"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parentTopicId": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "level": {
+      "type": "string",
+      "enum": ["foundation", "intermediate", "advanced"]
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "uniqueItems": true
+    }
+  }
+}

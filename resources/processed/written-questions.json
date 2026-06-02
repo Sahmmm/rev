@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "schema": "schemas/written-question.schema.json",
+  "writtenQuestions": [
+    {
+      "id": "wq-compare-sgd-batch-minibatch",
+      "type": "written-question",
+      "prompt": "Compare la descente de gradient complete, SGD et mini-batch SGD. Discute cout de calcul, variance du gradient et consequences sur l'entrainement.",
+      "officialAnswer": "La descente de gradient complete calcule le gradient sur tout le jeu d'entrainement avant chaque mise a jour : l'estimation est stable mais couteuse et peu frequente. SGD pur utilise un seul exemple : les mises a jour sont rapides mais tres bruitees. Le mini-batch SGD utilise un sous-ensemble d'exemples, ce qui donne un compromis entre cout, vectorisation et variance du gradient. En pratique, le mini-batch est souvent prefere car il exploite le materiel moderne tout en gardant un bruit utile pour l'optimisation.",
+      "expectedStructure": [
+        "Definir les trois variantes.",
+        "Comparer la qualite de l'estimation du gradient.",
+        "Comparer cout memoire/calcul et frequence des mises a jour.",
+        "Conclure sur le compromis pratique du mini-batch."
+      ],
+      "gradingCriteria": [
+        "Mentionne explicitement la variance du gradient.",
+        "Distingue cout par update et nombre d'updates.",
+        "Evite de presenter SGD comme toujours meilleur ou toujours moins bon."
+      ],
+      "difficulty": "medium",
+      "topicIds": ["sgd", "optimization"],
+      "tags": ["comparison", "mini-batch", "gradient"],
+      "source": {
+        "resourceId": "course-cm-01-sgd",
+        "resourceType": "course",
+        "file": "resources/courses/CM_01_SGD.pdf",
+        "locator": null
+      },
+      "status": "draft"
+    },
+    {
+      "id": "wq-cnn-inductive-bias",
+      "type": "written-question",
+      "prompt": "Explique pourquoi les CNN sont adaptes aux images en termes de biais inductifs. Precise aussi une limite de cette hypothese.",
+      "officialAnswer": "Les CNN exploitent la localite spatiale grace aux champs recepteurs locaux et le partage de poids, ce qui suppose que des motifs similaires peuvent apparaitre a differentes positions. Cela reduit le nombre de parametres et introduit une equivariance aux translations utile pour les images. Une limite est que ce biais peut etre insuffisant si la tache depend fortement de relations globales, de longues dependances spatiales ou de transformations non couvertes par l'architecture et les donnees.",
+      "expectedStructure": [
+        "Identifier localite et partage de poids.",
+        "Relier ces proprietes aux images.",
+        "Expliquer le gain en parametres et generalisation.",
+        "Donner au moins une limite."
+      ],
+      "gradingCriteria": [
+        "Utilise correctement les notions d'equivariance/invariance.",
+        "Ne confond pas convolution et couche dense.",
+        "Mentionne une limite raisonnable."
+      ],
+      "difficulty": "medium",
+      "topicIds": ["cnn"],
+      "tags": ["inductive-bias", "images", "convolution"],
+      "source": {
+        "resourceId": "course-cours-cnn",
+        "resourceType": "course",
+        "file": "resources/courses/cours_cnn.pdf",
+        "locator": null
+      },
+      "status": "draft"
+    },
+    {
+      "id": "wq-backprop-chain-rule",
+      "type": "written-question",
+      "prompt": "Decris le lien entre backpropagation et regle de derivation en chaine. Pourquoi cet algorithme est-il crucial pour les reseaux profonds ?",
+      "officialAnswer": "La backpropagation applique la regle de derivation en chaine sur le graphe de calcul du reseau afin de propager les derivees de la perte depuis la sortie vers les couches precedentes. Elle reutilise les calculs intermediaires de la propagation avant et evite de recalculer independamment chaque derivee. Elle est cruciale car les reseaux profonds contiennent beaucoup de parametres et de compositions : sans calcul efficace des gradients, l'entrainement par optimisation gradient serait impraticable.",
+      "expectedStructure": [
+        "Rappeler la composition de fonctions dans un reseau.",
+        "Expliquer la propagation des gradients de la sortie vers l'entree.",
+        "Mentionner la reutilisation des activations/intermediaires.",
+        "Conclure sur l'efficacite computationnelle."
+      ],
+      "gradingCriteria": [
+        "Distingue propagation avant et arriere.",
+        "Explique l'interet computationnel, pas seulement mathematique.",
+        "Relie le gradient a l'optimiseur sans confondre les deux."
+      ],
+      "difficulty": "hard",
+      "topicIds": ["backpropagation", "neural-networks"],
+      "tags": ["chain-rule", "gradient", "training"],
+      "source": {
+        "resourceId": "course-presentation-reseaux-neurones",
+        "resourceType": "course",
+        "file": "resources/courses/Presentation_reseaux_de_neurones.pdf",
+        "locator": null
+      },
+      "status": "draft"
+    },
+    {
+      "id": "wq-overfitting-diagnosis",
+      "type": "written-question",
+      "prompt": "A partir des courbes train/validation, comment diagnostiquer un sur-apprentissage ? Quelles actions proposer ?",
+      "officialAnswer": "Un sur-apprentissage est probable si la performance d'entrainement continue de s'ameliorer alors que la performance de validation stagne ou se degrade. Les actions possibles incluent regularisation, early stopping, augmentation de donnees, reduction de capacite, meilleure validation ou amelioration du jeu de donnees. Il faut d'abord verifier que le probleme n'est pas une mauvaise optimisation ou un decalage de distribution entre train et validation.",
+      "expectedStructure": [
+        "Decrire le symptome sur les courbes.",
+        "Distinguer sur-apprentissage et sous-optimisation.",
+        "Proposer plusieurs leviers correctifs.",
+        "Mentionner le role du jeu de validation."
+      ],
+      "gradingCriteria": [
+        "Compare explicitement train et validation.",
+        "Propose des actions adaptees au diagnostic.",
+        "Ne confond pas regularisation et simple augmentation du nombre d'epochs."
+      ],
+      "difficulty": "medium",
+      "topicIds": ["regularization", "optimization"],
+      "tags": ["overfitting", "diagnostic", "validation"],
+      "source": {
+        "resourceId": "course-cm2",
+        "resourceType": "course",
+        "file": "resources/courses/CM2.pdf",
+        "locator": null
+      },
+      "status": "draft"
+    },
+    {
+      "id": "wq-data-centric-error-analysis",
+      "type": "written-question",
+      "prompt": "Comment une demarche centree donnees peut-elle ameliorer un modele de deep learning sans changer son architecture ?",
+      "officialAnswer": "Elle peut ameliorer la performance en identifiant les erreurs systematiques, les exemples mal etiquetes, les classes sous-representees, les distributions non couvertes et les donnees ambigues. Les actions incluent nettoyage d'annotations, collecte ciblee, reequilibrage, augmentation adaptee et meilleure separation train/validation/test. Le modele reste identique, mais le signal d'apprentissage devient plus fiable et plus representatif de la tache.",
+      "expectedStructure": [
+        "Definir l'approche centree donnees.",
+        "Presenter l'analyse d'erreurs.",
+        "Lister des actions concretes sur le dataset.",
+        "Expliquer pourquoi cela peut ameliorer la generalisation."
+      ],
+      "gradingCriteria": [
+        "Ne limite pas la reponse a l'augmentation de donnees.",
+        "Mentionne qualite d'annotation ou representativite.",
+        "Relie les actions aux erreurs observees."
+      ],
+      "difficulty": "hard",
+      "topicIds": ["data-centric-ai", "regularization"],
+      "tags": ["error-analysis", "dataset", "generalization"],
+      "source": {
+        "resourceId": "course-presentation-approches-centrees-donnees",
+        "resourceType": "course",
+        "file": "resources/courses/Presentation_approches_centrees_donnees.pdf",
+        "locator": null
+      },
+      "status": "draft"
+    },
+    {
+      "id": "wq-cnn-parameter-count",
+      "type": "written-question",
+      "prompt": "On applique une convolution 2D avec 32 filtres 3x3 sur une entree a 16 canaux, avec un biais par filtre. Calcule le nombre de parametres et explique pourquoi il ne depend pas de la taille spatiale de l'image.",
+      "officialAnswer": "Chaque filtre contient 3 x 3 x 16 poids, soit 144 poids. Pour 32 filtres, cela donne 32 x 144 = 4608 poids. Avec un biais par filtre, on ajoute 32 parametres, soit 4640 parametres au total. Ce nombre ne depend pas de la hauteur ou largeur de l'image car les memes poids sont appliques sur toutes les positions spatiales : c'est le partage de poids convolutionnel.",
+      "expectedStructure": [
+        "Identifier taille du noyau, canaux d'entree et nombre de filtres.",
+        "Calculer les poids.",
+        "Ajouter les biais.",
+        "Expliquer le partage de poids."
+      ],
+      "gradingCriteria": [
+        "Calcule 32 x 3 x 3 x 16 + 32.",
+        "Ne multiplie pas par le nombre de positions de sortie.",
+        "Explique la raison conceptuelle du partage de poids."
+      ],
+      "difficulty": "medium",
+      "topicIds": ["cnn"],
+      "tags": ["parameters", "calculation", "weight-sharing"],
+      "source": {
+        "resourceId": "course-01-presentation-cnn",
+        "resourceType": "course",
+        "file": "resources/courses/01_Presentation_CNN.pdf",
+        "locator": null
+      },
+      "status": "draft"
+    }
+  ]
+}
