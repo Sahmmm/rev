@@ -9,5 +9,10 @@ learning.
 - `public/` : fichiers statiques, images ou ressources servies directement.
 - `docs/` : documents de conception produit, UX educative et architecture.
 
+## Documents
+
+- `docs/product-design.md` : vision produit, architecture fonctionnelle,
+  parcours utilisateur, donnees conceptuelles et pistes techniques.
+
 Pour l'instant, aucune implementation n'est ajoutee. La prochaine etape peut
 definir la vision produit, les modules fonctionnels et les parcours utilisateur.
